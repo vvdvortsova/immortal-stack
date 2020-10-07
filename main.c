@@ -1,6 +1,9 @@
-#include <stdio.h>
+#include "src/all_possible_stack.h"
+
+
 
 int main() {
-    printf("Hello, World!\n");
+    struct STACK(int) stack;
+
     return 0;
 }

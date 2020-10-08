@@ -1,5 +1,7 @@
 # immortal-stack
-Immortal stack for ISP RAS
+Immortal stack for ISP RAS 
+
+## Description
 The base stack implementation with some examples in main
 
 ## Run

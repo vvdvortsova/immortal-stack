@@ -1,6 +1,6 @@
 # immortal-stack
-Immortal stack for ISP RAS
-##Info
+Immortal stack for ISP RAS 
+## Description
 The base stack implementation with some examples in main
 
 ## Installing

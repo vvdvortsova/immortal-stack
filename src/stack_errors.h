@@ -1,9 +1,5 @@
-//
-// Created by vara on 08.10.2020.
-//
-
-#ifndef IMMORTAL_STACK_HELP_STACK_H
-#define IMMORTAL_STACK_HELP_STACK_H
+#ifndef IMMORTAL_STACK_STACK_ERRORS_H
+#define IMMORTAL_STACK_STACK_ERRORS_H
 
 #define ERROR 42
 const void * ERROR_PTR;
@@ -22,4 +18,4 @@ enum STACK_ERRORS{
 
 };
 
-#endif //IMMORTAL_STACK_HELP_STACK_H
+#endif //IMMORTAL_STACK_STACK_ERRORS_H

@@ -1,5 +1,18 @@
 #ifdef T
 
+int STACK(StackDump,T)(STACK(Stack,T)* stack){
+    FILE* fileToWriteResult = NULL;
+    char* nameOfFile = "stack_lib_logs.txt";
+    printf("awadawdawdawd\n");
+    fileToWriteResult = fopen(nameOfFile, "w");
+    if (!fileToWriteResult){
+        printf("failed to open file");
+        exit(EXIT_FAILURE);
+    }
+    fprintf(fileToWriteResult,"%s\n", "aaaaa");
+    fclose(fileToWriteResult);
+}
+
 int STACK(StackOk, T)(STACK(Stack,T)* stack){
     if(stack == NULL)
         return STACK_NULL_POINTER;
@@ -11,7 +24,6 @@ int STACK(StackOk, T)(STACK(Stack,T)* stack){
         return STACK_BAD_SIZE;
     else if(stack->capacity < 0 )
         return STACK_BAD_CAPACITY;
-
     return STACK_OK;
 }
  void STACK(StackOkOrDump, T)(STACK(Stack,T)* stack){
@@ -19,9 +31,8 @@ int STACK(StackOk, T)(STACK(Stack,T)* stack){
     //TODO:
     if(resError != STACK_OK){
         STACK_DUMP(stack)
-        assert(printf("ErrorType = %s", ERROR_TYPE(resError)));
+//        STACK(StackDump,T)(stack);
     }
-
 }
 
 int STACK(StackConstructor,T)(STACK(Stack,T)* s, ssize_t capacity){
@@ -36,7 +47,6 @@ int STACK(StackConstructor,T)(STACK(Stack,T)* s, ssize_t capacity){
   s->storage = calloc(capacity,sizeof(T));
   if(!s->storage)
       return STACK_BAD_CALLOC;
-
   return STACK_OK;
 }
 
@@ -63,12 +73,13 @@ int STACK(StackSize,T)(STACK(Stack,T)* stack){
 int STACK(StackPush,T)(STACK(Stack,T)* stack, T value){
     STACK(StackOkOrDump, T)(stack);
 
-   if(stack->size == stack->capacity) {
-       fprintf(stderr, "Element can not be pushed: Stack is full.\n");
-       return STACK_FULL;
-  }
+    if(stack->size == stack->capacity) {
+        fprintf(stderr, "Element can not be pushed: Stack is full.\n");
+        return STACK_FULL;
+    }
     if(!value)
         exit(-1);
+
     stack->size++;
     stack->storage[stack->size - 1] = value;
 
@@ -83,8 +94,8 @@ T  STACK(StackPop,T)(STACK(Stack,T)* stack){
         stack->size--;
         return elem;
     }
-    exit(-1);
+    //TODO: what should I do here?
+//    exit();
 }
 
 #endif
-

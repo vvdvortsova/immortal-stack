@@ -5,13 +5,14 @@
 #include "stack.h"
 #undef T
 
-#undef T
-#include "stack.h"
 #define T double
+#include "stack.h"
+#undef T
 
 
 #define T int
 #include "stack.h"
+#undef T
 
 
 #endif //IMMORTAL_STACK_ALL_POSSIBLE_STACK_H

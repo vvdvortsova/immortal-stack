@@ -5,7 +5,8 @@
 int main() {
 
     STACK(Stack,int) stack;
-    STACK(StackConstructor, int)(&stack, 100);
+    StackConstructor_int(&stack,100);
+//    STACK(StackConstructor, int)(&stack, 100);
     printf("The size of stack = %d\n", STACK(StackSize,int)(&stack));
     printf("The size of capacity = %ld\n", stack.capacity);
 
@@ -14,9 +15,9 @@ int main() {
     printf("The size of stack = %d\n", STACK(StackSize,int)(&stack));
     STACK(StackPush,int)(&stack, 200);
     printf("The size of stack = %d\n", STACK(StackSize,int)(&stack));
-    T value = STACK(StackPop,int)(&stack);
+    int value = STACK(StackPop,int)(&stack);
     printf("pop value = %ld\n",value);
-    T value2 = STACK(StackPop,int)(&stack);
+    int value2 = STACK(StackPop,int)(&stack);
     printf("pop value = %ld\n",value2);
 
     stack.size = -1;

@@ -27,9 +27,9 @@ void stackIntPop(){
     STACK(StackConstructor, int)(&stack, 100);
     STACK(StackPush,int)(&stack, 100);
     STACK(StackPush,int)(&stack, 200);
-    T value = STACK(StackPop,int)(&stack);
+    int value = STACK(StackPop,int)(&stack);
     assert(STACK(StackSize,int)(&stack) == 1);
-    T value2 = STACK(StackPop,int)(&stack);
+    int value2 = STACK(StackPop,int)(&stack);
     assert(STACK(StackSize,int)(&stack) == 0);
 }
 int main(){

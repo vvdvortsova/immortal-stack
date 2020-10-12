@@ -6,21 +6,17 @@ set(CMAKE_C_STANDARD 11)
 
 add_executable(immortal_stack
         main.c
-        src/stack.c
         src/stack.h
         src/templates.h
         src/all_possible_stack.h
-        src/all_possible_stack.c
         src/stack_errors.c
         src/stack_errors.h)
 
 add_executable(test
         tests/tests.c
-        src/stack.c
         src/stack.h
         src/templates.h
         src/all_possible_stack.h
-        src/all_possible_stack.c
         src/stack_errors.c
         src/stack_errors.h)
 set(RESOURCE_FILES

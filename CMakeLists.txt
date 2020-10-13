@@ -19,5 +19,6 @@ add_executable(test
         src/all_possible_stack.h
         src/stack_errors.c
         src/stack_errors.h)
+
 set(RESOURCE_FILES
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/stack_lib_logs.txt)
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/test.txt)

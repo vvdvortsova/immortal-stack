@@ -10,90 +10,120 @@
 #include "templates.h"
 #include "stack_errors.h"
 
+#define FILE_DUMP "stack_logs.txt"
+#define MAX_SIZE_OF_FILE 20000//20kb
+#define CANARY_VALUE 0xDADBEEFBADull
+
+#define LEVEL_OF_DEFENCE 1
 #ifdef  T
+
+//const unsigned long long CANARY_VALUE =
 /**
  * Macros define custom STACK_DUMP function for getting info in stderr or file stack_lib_errors.txt
  * @param[in] stack typedef struct STACK(Stack,T)
 **/
-#define STACK_DUMP(stack)\
-  fprintf(stderr, "\t=============STACK DUMP=============\n");                                                                        \
-  fprintf(stderr, "STACK[T = %s] [%p] %s(%d) \n", ERROR_TYPE(STACK(Stack,T)), (void *)stack, __FILE__, __LINE__); \
-  fprintf(stderr, "size = %d\n", stack->size);                                                                       \
-  fprintf(stderr, "capacity = %d\n", stack->capacity);\
-  fprintf(stderr, "\t=============STACK DUMP=============\n");     \
+#define STACK_DUMP(stack, T, errorType)\
   FILE* file = NULL;\
-  char* fileName = "stack_lib_logs.txt";\
-  file = fopen(fileName, "w");\
-  if (!file) {\
-  printf("failed to open file %s",fileName);\
-  exit(EXIT_FAILURE);}\
-  fprintf(file, "\t=============STACK DUMP=============\n");\
-  fprintf(file, "STACK[T = %s] [%p] %s(%d) \n", ERROR_TYPE(STACK(Stack,T)), (void *)stack, __FILE__, __LINE__);\
+  file = fopen(FILE_DUMP, "a");\
+  if (!file){\
+    printf("failed to open file %s",FILE_DUMP);\
+    exit(EXIT_FAILURE);\
+  }\
+  fseek(file, 0, SEEK_END);\
+  int size = ftell(file);\
+  fseek(file, 0, SEEK_SET);\
+  if(size > MAX_SIZE_OF_FILE){\
+      fclose(fopen(FILE_DUMP, "w"));\
+      file = fopen(FILE_DUMP, "a");\
+  }\
+  fprintf(file, "DUMP START=============\n");\
+  fprintf(file, "STACK[T = %s] [%p] %s(%d) \n", GET_TYPE(T), (void *)stack, __FILE__, __LINE__);\
   fprintf(file, "size = %d\n", stack->size);\
   fprintf(file, "capacity = %d\n", stack->capacity);\
-  fprintf(file, "\t=============STACK DUMP=============\n");\
+  switch(errorType){\
+      case 1:\
+            fprintf(file, "errorType  = STACK_NULL_POINTER\n");\
+            break;\
+      case 2:\
+            fprintf(file, "errorType  = STACK_BAD_CALLOC\n");\
+            break;\
+      case 3:\
+            fprintf(file, "errorType  = STACK_SIZE_IS_ZERO\n");\
+            break;\
+      case 4:\
+            fprintf(file, "errorType  = STACK_FULL\n");\
+            break;\
+      case 5:\
+            fprintf(file, "errorType  = STACK_BAD_SIZE\n");\
+            break;\
+      case 6:\
+            fprintf(file, "errorType  = STACK_BAD_CAPACITY\n");\
+            break;\
+      case 7:\
+            fprintf(file, "errorType  = STACK_NULL_STORAGE\n");\
+            break;\
+      case 8:\
+            fprintf(file, "errorType  = STACK_ERRPTR_STORAGE\n");\
+            break;\
+      case 9:\
+            fprintf(file, "errorType  = STACK_LEFT_CANARY_SONGS\n");\
+            break;\
+      case 10:\
+            fprintf(file, "errorType  = STACK_RIGHT_CANARY_SONGS\n");\
+            break;\
+      case 11:\
+            fprintf(file, "errorType  = STACK_ALL_CANARY_SONGS\n");\
+            break;\
+  };\
+  fprintf(file,"DUMP END=============\n");\
   fclose(file);\
+  fprintf(stderr, "DUMP JUMPED!\n");\
+  exit(-1);\
   \
 
-#define MY_FILE_NAME "stack_lib_logs"
-#define SAMPLE_DATA  "Content Content"
 /**
 * @brief  Struct is implementing a stack
 */
 typedef struct STACK(Stack,T){
+    unsigned long long canaryLeft;
     ssize_t size;
     ssize_t capacity;
     T* storage;
+    unsigned long long canaryRight;
 }STACK(Stack,T);
-
-/**
-* @brief       Stack Dump
- */
-int STACK(StackDump,T)(STACK(Stack,T)* stack){
-//    FILE* fileToWriteResult = NULL;
-//    char* nameOfFile = "stack_lib_logs.txt";
-//    printf("awadawdawdawd\n");
-//
-//    fileToWriteResult = fopen(nameOfFile, "w");
-//    if (!fileToWriteResult){
-//        printf("failed to open file");
-//        exit(EXIT_FAILURE);
-//    }
-//    fwrite ("aaaaa",1,1,fileToWriteResult);
-//    fclose(fileToWriteResult);
-
-    char file_data[256];
-    int file_size = sizeof(file_data);
-
-    // fill in some sample data
-    memcpy(file_data, SAMPLE_DATA, sizeof(SAMPLE_DATA));
-
-    FILE *file = fopen(MY_FILE_NAME, "w+");
-    if (file) {
-        fwrite(file_data, 1, file_size, file);
-        fclose(file);}
-}
 
 /**
 * @brief       Method verifies the stack fields
 * @param[in]   stack
  */
 int STACK(StackOk,T)(STACK(Stack,T)* stack){
-    {
     if(stack == NULL)
         return STACK_NULL_POINTER;
     else if(stack->storage == NULL)
         return STACK_NULL_STORAGE;
-    else if (stack->storage == perror)
+    else if(stack->storage == ERROR_PTR)
         return STACK_ERRPTR_STORAGE;
+    else if(stack->size == 0)
+        return STACK_SIZE_IS_ZERO;
     else if(stack->size < 0 )
         return STACK_BAD_SIZE;
     else if(stack->capacity < 0 )
         return STACK_BAD_CAPACITY;
+
+    if(LEVEL_OF_DEFENCE > 0){
+        if (stack->canaryLeft != CANARY_VALUE & stack->canaryRight != CANARY_VALUE)
+            return STACK_ALL_CANARY_SONGS;
+        else if (stack->canaryLeft != CANARY_VALUE)
+            return STACK_LEFT_CANARY_SONGS;
+        else if (stack->canaryRight != CANARY_VALUE)
+            return  STACK_RIGHT_CANARY_SONGS;
+        if(LEVEL_OF_DEFENCE > 2){
+            //todo hashing
+        }
+    }
+
     return STACK_OK;
 }
-}
-
 
 /**
 * @brief       Method verifies the stack fields and calls dump
@@ -101,10 +131,8 @@ int STACK(StackOk,T)(STACK(Stack,T)* stack){
  */
 void STACK(StackOkOrDump,T)(STACK(Stack,T)* stack) {
     int resError = STACK(StackOk, T)(stack);
-    //TODO:
     if (resError != STACK_OK) {
-//        STACK_DUMP(stack)
-        STACK(StackDump,T)(stack);
+            STACK_DUMP(stack,T,resError);
     }
 }
 /**
@@ -118,9 +146,15 @@ int STACK(StackConstructor,T)(STACK(Stack,T)* s, ssize_t capacity){
         return STACK_NULL_POINTER;
     }
     printf("capacity = %d\n",capacity);
+    s->canaryLeft = CANARY_VALUE;
     s->size = 0;
     s->capacity = capacity;
-    s->storage = calloc(capacity,sizeof(T));
+
+    s->storage = calloc(capacity, sizeof(T));
+
+    s->canaryRight = CANARY_VALUE;
+
+
     if(!s->storage)
         return STACK_BAD_CALLOC;
     return STACK_OK;
@@ -170,13 +204,14 @@ int STACK(StackPush,T)(STACK(Stack,T)* stack, T value){
         fprintf(stderr, "Element can not be pushed: Stack is full.\n");
         return STACK_FULL;
     }
-    if(!value)
+    if(!value){
+        fprintf(stderr, "Value is null!\n");
         exit(-1);
-
+    }
     stack->size++;
     stack->storage[stack->size - 1] = value;
-
     STACK(StackOkOrDump, T)(stack);
+
     return STACK_OK;
 }
 /**
@@ -191,8 +226,7 @@ T  STACK(StackPop,T)(STACK(Stack,T)* stack){
         stack->size--;
         return elem;
     }
-    //TODO: what should I do here?
-//    exit();
+    STACK(StackOkOrDump, T)(stack);
 }
 
 #endif

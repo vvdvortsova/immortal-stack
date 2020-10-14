@@ -1,10 +1,10 @@
 #include "stdio.h"
 #include "src/all_possible_stack.h"
 
-
 int main() {
 
     STACK(Stack,int) stack;
+
     StackConstructor_int(&stack,100);
 //    STACK(StackConstructor, int)(&stack, 100);
     printf("The size of stack = %d\n", STACK(StackSize,int)(&stack));

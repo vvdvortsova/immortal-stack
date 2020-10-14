@@ -10,14 +10,14 @@
 #include "templates.h"
 #include "stack_errors.h"
 
+//#define CANARY_CHECK
+
 #define FILE_DUMP "stack_logs.txt"
 #define MAX_SIZE_OF_FILE 20000//20kb
 #define CANARY_VALUE 0xDADBEEFBADull
 
-#define LEVEL_OF_DEFENCE 1
 #ifdef  T
 
-//const unsigned long long CANARY_VALUE =
 /**
  * Macros define custom STACK_DUMP function for getting info in stderr or file stack_lib_errors.txt
  * @param[in] stack typedef struct STACK(Stack,T)
@@ -45,34 +45,31 @@
             fprintf(file, "errorType  = STACK_NULL_POINTER\n");\
             break;\
       case 2:\
-            fprintf(file, "errorType  = STACK_BAD_CALLOC\n");\
-            break;\
-      case 3:\
-            fprintf(file, "errorType  = STACK_SIZE_IS_ZERO\n");\
-            break;\
-      case 4:\
-            fprintf(file, "errorType  = STACK_FULL\n");\
-            break;\
-      case 5:\
             fprintf(file, "errorType  = STACK_BAD_SIZE\n");\
             break;\
-      case 6:\
+      case 3:\
             fprintf(file, "errorType  = STACK_BAD_CAPACITY\n");\
             break;\
-      case 7:\
+      case 4:\
             fprintf(file, "errorType  = STACK_NULL_STORAGE\n");\
             break;\
-      case 8:\
+      case 5:\
             fprintf(file, "errorType  = STACK_ERRPTR_STORAGE\n");\
             break;\
-      case 9:\
+      case 6:\
             fprintf(file, "errorType  = STACK_LEFT_CANARY_SONGS\n");\
             break;\
-      case 10:\
+      case 7:\
             fprintf(file, "errorType  = STACK_RIGHT_CANARY_SONGS\n");\
             break;\
-      case 11:\
+      case 8:\
             fprintf(file, "errorType  = STACK_ALL_CANARY_SONGS\n");\
+            break;\
+      case 9:\
+            fprintf(file, "errorType  = STACK_BUFFER_CANARY_LEFT_SONGS\n");\
+            break;\
+      case 10:\
+            fprintf(file, "errorType  = STACK_BUFFER_CANARY_RIGHT_SONGS\n");\
             break;\
   };\
   fprintf(file,"DUMP END=============\n");\
@@ -81,15 +78,21 @@
   exit(-1);\
   \
 
+typedef  unsigned long long canary_size;
+
 /**
 * @brief  Struct is implementing a stack
 */
 typedef struct STACK(Stack,T){
-    unsigned long long canaryLeft;
+#ifdef CANARY_CHECK
+    canary_size canaryLeft;
+#endif
     ssize_t size;
     ssize_t capacity;
     T* storage;
-    unsigned long long canaryRight;
+#ifdef CANARY_CHECK
+    canary_size canaryRight;
+#endif
 }STACK(Stack,T);
 
 /**
@@ -103,25 +106,25 @@ int STACK(StackOk,T)(STACK(Stack,T)* stack){
         return STACK_NULL_STORAGE;
     else if(stack->storage == ERROR_PTR)
         return STACK_ERRPTR_STORAGE;
-    else if(stack->size == 0)
-        return STACK_SIZE_IS_ZERO;
     else if(stack->size < 0 )
         return STACK_BAD_SIZE;
     else if(stack->capacity < 0 )
         return STACK_BAD_CAPACITY;
 
-    if(LEVEL_OF_DEFENCE > 0){
-        if (stack->canaryLeft != CANARY_VALUE & stack->canaryRight != CANARY_VALUE)
+#ifdef CANARY_CHECK
+    if (stack->canaryLeft != CANARY_VALUE & stack->canaryRight != CANARY_VALUE)
             return STACK_ALL_CANARY_SONGS;
-        else if (stack->canaryLeft != CANARY_VALUE)
+    else if (stack->canaryLeft != CANARY_VALUE)
             return STACK_LEFT_CANARY_SONGS;
-        else if (stack->canaryRight != CANARY_VALUE)
+    else if (stack->canaryRight != CANARY_VALUE)
             return  STACK_RIGHT_CANARY_SONGS;
-        if(LEVEL_OF_DEFENCE > 2){
-            //todo hashing
-        }
-    }
+    else if(((char*)stack->storage - 1)[0] != '\0')
+        return STACK_BUFFER_CANARY_LEFT_SONGS;
+    else if(((char*)stack->storage - 1)[-1] != '\0')
+        return STACK_BUFFER_CANARY_RIGHT_SONGS;
 
+#endif
+    //todo hashing
     return STACK_OK;
 }
 
@@ -141,22 +144,29 @@ void STACK(StackOkOrDump,T)(STACK(Stack,T)* stack) {
 * @param[in]   ssize_t capacity
  */
 int STACK(StackConstructor,T)(STACK(Stack,T)* s, ssize_t capacity){
-    if(s == NULL) {
-        fprintf(stderr, "Insufficient memory to initialize stack.\n");
-        return STACK_NULL_POINTER;
+    if(s == NULL){
+        fprintf(stderr, "STACK is null\n");
+        exit(-1);
     }
     printf("capacity = %d\n",capacity);
+#ifdef CANARY_CHECK
     s->canaryLeft = CANARY_VALUE;
-    s->size = 0;
-    s->capacity = capacity;
 
-    s->storage = calloc(capacity, sizeof(T));
+    void* temp = (char*)calloc(capacity * sizeof(T) + 2*sizeof(char), sizeof(char));
+    *(char*)temp = '\0';//first elem
+    *((char*)(&temp + 1) - 1) = '\0';//last elem
+    s->storage = (T*)((char*)temp + 1);
 
     s->canaryRight = CANARY_VALUE;
-
-
-    if(!s->storage)
-        return STACK_BAD_CALLOC;
+#else
+    s->storage = (T*)calloc(capacity, sizeof(T*));
+#endif
+    s->size = 0;
+    s->capacity = capacity;
+    if(!s->storage){
+        fprintf(stderr, "Constructor: can't to calloc memory to storage!\n");
+        exit(-1);
+    }
     return STACK_OK;
 }
 
@@ -172,10 +182,15 @@ int STACK(StackDestructor,T)(STACK(Stack,T)* stack, ssize_t size, ssize_t capaci
         return STACK_NULL_POINTER;
     stack->size = -1;
     stack->capacity = -1;
+#ifdef  CANARY_CHECK
+    free((char*)stack->storage - 1);
+#else
     free(stack->storage);
+#endif
     stack->storage = ERROR_PTR;
     return STACK_OK;
 }
+
 /**
 * @brief       Method checks the size of the stack
 * @param[in]   stack
@@ -199,21 +214,39 @@ int STACK(StackSize,T)(STACK(Stack,T)* stack){
  */
 int STACK(StackPush,T)(STACK(Stack,T)* stack, T value){
     STACK(StackOkOrDump, T)(stack);
-
+    //TODO: add hashing
+    //resize stack
     if(stack->size == stack->capacity) {
-        fprintf(stderr, "Element can not be pushed: Stack is full.\n");
-        return STACK_FULL;
+        stack->capacity = stack->capacity * 2;
+        fprintf(stderr, "Stack was resized\n");
+
+#ifdef  CANARY_CHECK
+        void *temp = realloc((char *) stack->storage - 1, stack->capacity * sizeof(T) + 2 * sizeof(char));
+        *(char *) temp = '\0';//first elem
+        *((char *) (&temp + 1) - 1) = '\0';//last elem
+#else
+        T *temp = (T *) realloc(stack->storage, stack->capacity * sizeof(T));
+
+#endif
+        if (!temp) {
+            fprintf(stderr, "Can't realloc memory to resize stack buffer\n");
+            exit(-1);
+        } else {
+#ifdef CANARY_CHECK
+            stack->storage = (T *) ((char *) temp + 1);
+        }
+#else
+            stack->storage = temp;
+        }
+
+#endif
     }
-    if(!value){
-        fprintf(stderr, "Value is null!\n");
-        exit(-1);
-    }
-    stack->size++;
-    stack->storage[stack->size - 1] = value;
+    stack->storage[stack->size++] = value;
     STACK(StackOkOrDump, T)(stack);
 
     return STACK_OK;
 }
+
 /**
 * @brief       Method gets the value of T type from the top of the stack
 * @param[in]   stack
@@ -226,7 +259,8 @@ T  STACK(StackPop,T)(STACK(Stack,T)* stack){
         stack->size--;
         return elem;
     }
-    STACK(StackOkOrDump, T)(stack);
+    fprintf(stderr, "Pop: size < 0\n");
+    exit(-1);
 }
 
 #endif

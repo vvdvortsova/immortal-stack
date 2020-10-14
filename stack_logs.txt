@@ -22,3 +22,9 @@ size = 0
 capacity = 100
 errorType  = STACK_SIZE_IS_ZERO
 DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffc62a40710] /home/vara/isp_ras_projects/immortal-stack/src/stack.h(145) 
+size = 0
+capacity = 100
+errorType  = STACK_SIZE_IS_ZERO
+DUMP END=============

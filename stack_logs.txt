@@ -1,0 +1,180 @@
+DUMP START=============
+STACK[T = int] [0x7ffde43cc000] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(176) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffc1c8e8a90] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(176) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffeb3b43580] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(176) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffcd3f4e3d0] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(176) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffe6f38f5f0] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(176) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffcfcbfd710] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(175) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffd4e697530] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(175) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffe19363910] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(175) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7fff32bcde60] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(175) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffe5325eb20] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(175) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffc9d8d39f0] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(175) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7fff8535a4c0] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(175) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffe8b14aa70] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(175) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffe47f57410] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(175) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffe5a0496b0] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(175) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffdb1132680] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(175) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7fff53252210] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(175) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffcab0898d0] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(175) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffd80ec4250] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(175) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffde7fc6100] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(175) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7fffef3a7d70] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(175) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffd38e2b480] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(175) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7fff1ea304f0] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(175) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffe13731b30] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(175) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffe4cbbbc90] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(175) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7fff978e3c60] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(175) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffca7915720] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(175) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffccd4bc470] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(175) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7fff2c9ec710] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(175) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffd683f9970] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(175) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============

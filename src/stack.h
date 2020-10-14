@@ -80,8 +80,7 @@
   fprintf(file,"DUMP END=============\n");\
   fclose(file);\
   fprintf(stderr, "DUMP JUMPED!\n");\
-//  exit(-1);\
-  \
+
 
 typedef unsigned long long canary_size;
 typedef unsigned long long hash_size;
@@ -174,6 +173,7 @@ void STACK(StackOkOrDump,T)(STACK(Stack,T)* stack) {
     int resError = STACK(StackOk, T)(stack);
     if (resError != STACK_OK) {
             STACK_DUMP(stack,T,resError);
+            exit(EXIT_FAILURE);
     }
 }
 /**
@@ -207,7 +207,7 @@ int STACK(StackConstructor,T)(STACK(Stack,T)* s, ssize_t capacity){
     s->capacity = capacity;
     if(!s->storage){
         fprintf(stderr, "Constructor: can't to calloc memory to storage!\n");
-        exit(-1);
+        exit(EXIT_FAILURE);
     }
     return STACK_OK;
 }
@@ -278,7 +278,7 @@ int STACK(StackPush,T)(STACK(Stack,T)* stack, T value){
 #endif
         if (!temp) {
             fprintf(stderr, "Can't realloc memory to resize stack buffer\n");
-            exit(-1);
+            exit(EXIT_FAILURE);
         } else {
 #ifdef CANARY_CHECK
             stack->storage = (T*)((char*)temp + 1);
@@ -316,7 +316,7 @@ T  STACK(StackPop,T)(STACK(Stack,T)* stack){
         return elem;
     }
     fprintf(stderr,"Pop: size < 0\n");
-    exit(-1);
+    exit(EXIT_FAILURE);
 }
 
 #endif

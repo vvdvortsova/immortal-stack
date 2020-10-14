@@ -16,28 +16,19 @@ int main() {
     STACK(StackPush,int)(&stack, 200);
     printf("The size of stack = %d\n", STACK(StackSize,int)(&stack));
     int value = STACK(StackPop,int)(&stack);
-    printf("pop value = %ld\n",value);
+    printf("pop value1 = %ld\n",value);
     int value2 = STACK(StackPop,int)(&stack);
-    printf("pop value = %ld\n",value2);
+    printf("pop value2 = %ld\n",value2);
     int value3 = STACK(StackPop,int)(&stack);
-    printf("pop value = %ld\n",value3);
+    printf("pop value3 = %ld\n",value3);
     int value4 = STACK(StackPop,int)(&stack);
-    printf("pop value = %ld\n",value4);
+    printf("pop value4 = %ld\n",value4);
 
     stack.size = -2;
     int value5 = STACK(StackPop,int)(&stack);
     printf("pop value = %ld\n",value5);
     STACK(StackPush,int)(&stack, 100);
     printf("The size of stack = %d\n", STACK(StackSize,int)(&stack));
-
-    FILE* f = fopen("test.txt", "w");  // open the file for writing
-    if (f != NULL)                       // check for success
-    {
-        fprintf(f, "%d", 42);            // write the number 42 as a string
-        printf("blyaaaaaaa!");
-        fclose(f);                       // close the file
-        f = NULL;                        // set file handle to null since f is no longer valid
-    } else printf("asdawfwafawf");
 
     return 0;
 }

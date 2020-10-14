@@ -10,11 +10,13 @@
 #include "templates.h"
 #include "stack_errors.h"
 
-//#define CANARY_CHECK
+#define CANARY_CHECK
+#define HASH_CHECK
 
 #define FILE_DUMP "stack_logs.txt"
 #define MAX_SIZE_OF_FILE 20000//20kb
 #define CANARY_VALUE 0xDADBEEFBADull
+#define CANARY_BUFFER_VALUE 0x42
 
 #ifdef  T
 
@@ -71,14 +73,19 @@
       case 10:\
             fprintf(file, "errorType  = STACK_BUFFER_CANARY_RIGHT_SONGS\n");\
             break;\
+      case 11:\
+            fprintf(file, "errorType  =  STACK_HASH_INCORRECT\n");\
+            break;\
   };\
   fprintf(file,"DUMP END=============\n");\
   fclose(file);\
   fprintf(stderr, "DUMP JUMPED!\n");\
-  exit(-1);\
+//  exit(-1);\
   \
 
-typedef  unsigned long long canary_size;
+typedef unsigned long long canary_size;
+typedef unsigned long long hash_size;
+
 
 /**
 * @brief  Struct is implementing a stack
@@ -92,8 +99,33 @@ typedef struct STACK(Stack,T){
     T* storage;
 #ifdef CANARY_CHECK
     canary_size canaryRight;
+    #ifdef HASH_CHECK
+    hash_size canaryHash;
+    #endif
 #endif
 }STACK(Stack,T);
+
+
+
+#ifdef HASH_CHECK
+hash_size STACK(StackHash,T)(STACK(Stack,T)* stack){
+#ifdef CANARY_CHECK
+    hash_size tmp = stack->canaryHash;
+    stack->canaryHash = 0;
+    //count hash
+    hash_size sum = 0;
+    sum += (hash_size) sizeof(stack->canaryLeft);
+    sum += (hash_size) sizeof(stack->canaryRight);
+    sum += (hash_size) sizeof(stack->canaryHash);
+    sum += (hash_size) sizeof(stack->size);
+    sum += (hash_size) sizeof(stack->storage);
+    sum += (hash_size) sizeof(stack->capacity);
+    sum += (hash_size) stack->size * sizeof(*stack->storage);
+    stack->canaryHash = tmp;
+    return sum;
+#endif
+}
+#endif
 
 /**
 * @brief       Method verifies the stack fields
@@ -118,13 +150,19 @@ int STACK(StackOk,T)(STACK(Stack,T)* stack){
             return STACK_LEFT_CANARY_SONGS;
     else if (stack->canaryRight != CANARY_VALUE)
             return  STACK_RIGHT_CANARY_SONGS;
-    else if(((char*)stack->storage - 1)[0] != '\0')
+    else if(*((char*)stack->storage - 1) != (char)CANARY_BUFFER_VALUE)
         return STACK_BUFFER_CANARY_LEFT_SONGS;
-    else if(((char*)stack->storage - 1)[-1] != '\0')
+    else if(*(char*)(stack->storage + stack->capacity)!= (char)CANARY_BUFFER_VALUE){
         return STACK_BUFFER_CANARY_RIGHT_SONGS;
-
+    }
+#ifdef BACK_OK
+    #ifdef HASH_CHECK
+        hash_size checkHash = STACK(StackHash,T)(stack);
+        if(checkHash != stack->canaryHash);
+            return  STACK_HASH_INCORRECT;
+    #endif
 #endif
-    //todo hashing
+#endif
     return STACK_OK;
 }
 
@@ -148,16 +186,20 @@ int STACK(StackConstructor,T)(STACK(Stack,T)* s, ssize_t capacity){
         fprintf(stderr, "STACK is null\n");
         exit(-1);
     }
-    printf("capacity = %d\n",capacity);
 #ifdef CANARY_CHECK
     s->canaryLeft = CANARY_VALUE;
 
     void* temp = (char*)calloc(capacity * sizeof(T) + 2*sizeof(char), sizeof(char));
-    *(char*)temp = '\0';//first elem
-    *((char*)(&temp + 1) - 1) = '\0';//last elem
-    s->storage = (T*)((char*)temp + 1);
+    char* canaryLeft = (char*)temp;
+    char* canaryRight = (char*)((char*)temp + sizeof(char) + capacity * sizeof(T));
+    *canaryLeft = (char)CANARY_BUFFER_VALUE;
+    *canaryRight =(char)CANARY_BUFFER_VALUE;
 
+    s->storage = (T*)((char*)temp + 1);
     s->canaryRight = CANARY_VALUE;
+    #ifdef HASH_CHECK
+    s->canaryHash = STACK(StackHash,T)(s);
+    #endif
 #else
     s->storage = (T*)calloc(capacity, sizeof(T*));
 #endif
@@ -176,7 +218,7 @@ int STACK(StackConstructor,T)(STACK(Stack,T)* s, ssize_t capacity){
 * @param[in]   ssize_t capacity
 * @param[in]   ssize_t size
  */
-int STACK(StackDestructor,T)(STACK(Stack,T)* stack, ssize_t size, ssize_t capacity){
+int STACK(StackDestructor,T)(STACK(Stack,T)* stack){
     STACK(StackOkOrDump, T)(stack);
     if(!stack || !stack->storage)
         return STACK_NULL_POINTER;
@@ -184,6 +226,9 @@ int STACK(StackDestructor,T)(STACK(Stack,T)* stack, ssize_t size, ssize_t capaci
     stack->capacity = -1;
 #ifdef  CANARY_CHECK
     free((char*)stack->storage - 1);
+    #ifdef HASH_CHECK
+        stack->canaryHash = -1;
+#endif
 #else
     free(stack->storage);
 #endif
@@ -213,8 +258,9 @@ int STACK(StackSize,T)(STACK(Stack,T)* stack){
 * @param[in]   T value
  */
 int STACK(StackPush,T)(STACK(Stack,T)* stack, T value){
+#define BACK_OK
     STACK(StackOkOrDump, T)(stack);
-    //TODO: add hashing
+#undef BACK_OK
     //resize stack
     if(stack->size == stack->capacity) {
         stack->capacity = stack->capacity * 2;
@@ -222,10 +268,12 @@ int STACK(StackPush,T)(STACK(Stack,T)* stack, T value){
 
 #ifdef  CANARY_CHECK
         void *temp = realloc((char *) stack->storage - 1, stack->capacity * sizeof(T) + 2 * sizeof(char));
-        *(char *) temp = '\0';//first elem
-        *((char *) (&temp + 1) - 1) = '\0';//last elem
+        char* canaryLeft = (char*)temp;
+        char* canaryRight = (char*)((char*)temp + sizeof(char) + stack->capacity * sizeof(T));
+        *canaryLeft = (char)CANARY_BUFFER_VALUE;
+        *canaryRight = (char)CANARY_BUFFER_VALUE;
 #else
-        T *temp = (T *) realloc(stack->storage, stack->capacity * sizeof(T));
+        T* temp = (T*)realloc(stack->storage, stack->capacity * sizeof(T));
 
 #endif
         if (!temp) {
@@ -233,7 +281,7 @@ int STACK(StackPush,T)(STACK(Stack,T)* stack, T value){
             exit(-1);
         } else {
 #ifdef CANARY_CHECK
-            stack->storage = (T *) ((char *) temp + 1);
+            stack->storage = (T*)((char*)temp + 1);
         }
 #else
             stack->storage = temp;
@@ -241,6 +289,9 @@ int STACK(StackPush,T)(STACK(Stack,T)* stack, T value){
 
 #endif
     }
+#ifdef HASH_CHECK
+    stack->canaryHash = STACK(StackHash,T)(stack);
+#endif
     stack->storage[stack->size++] = value;
     STACK(StackOkOrDump, T)(stack);
 
@@ -253,13 +304,18 @@ int STACK(StackPush,T)(STACK(Stack,T)* stack, T value){
 * return   T value
  */
 T  STACK(StackPop,T)(STACK(Stack,T)* stack){
+#define BACK_OK
     STACK(StackOkOrDump, T)(stack);
-    if(stack->size > 0){
+#undef BACK_OK
+    if(stack->size >= 1){
         T elem = stack->storage[stack->size - 1];
         stack->size--;
+#ifdef HASH_CHECK
+        stack->canaryHash = STACK(StackHash,T)(stack);
+#endif
         return elem;
     }
-    fprintf(stderr, "Pop: size < 0\n");
+    fprintf(stderr,"Pop: size < 0\n");
     exit(-1);
 }
 

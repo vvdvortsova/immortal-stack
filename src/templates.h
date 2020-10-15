@@ -1,3 +1,7 @@
+/**
+* @file         templates.h
+* @author       Dvortsova Varvara BSE182 HSE
+*/
 #ifndef IMMORTAL_STACK_TEMPLATES_H
 #define IMMORTAL_STACK_TEMPLATES_H
 

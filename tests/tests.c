@@ -2,12 +2,13 @@
 * @file         tests.c
 * @brief        Tests of methods for stack
 * @author       Dvortsova Varvara BSE182 HSE
+* @include      zconf.h, wait.h, ../src/all_possible_stack.h
 */
 #include <zconf.h>
 #include <wait.h>
 #include "../src/all_possible_stack.h"
 /**
- * Macros define custom assert function for unit testing
+ * Macros defines a custom assert function for unit testing
  * @param nameOfMethod   Describe the name Of method where assertTestINT was called
  * @param code           Actual value
  * @param expected       Expected value
@@ -21,10 +22,16 @@
                 nameOfMethod);\
         fprintf(stderr, "[TEST] expected = %d code = %d \n",expected, code);\
     }
+
 #define  assertFailed(nameOfMethod)\
 fprintf(stderr, "[TEST] [ %s ] [FAILED]\n",\
                 nameOfMethod);\
 
+/**
+ * Macros defines a custom assert function for checking exit code from child process
+ * @param nameOfMethod   Describe the name Of method where forkChildAssert was called
+ * @param statement      Statement runs in child process
+ * */
 #define forkChildAssert(nameOfFunction, statement)\
     pid_t ppid = fork();\
     if(ppid < 0){\
@@ -41,8 +48,6 @@ fprintf(stderr, "[TEST] [ %s ] [FAILED]\n",\
         assertTestINT(nameOfFunction, exitCode , EXIT_FAILURE);\
       }\
     }\
-
-
 
 
 void stackIntConstructor(){
@@ -90,6 +95,50 @@ void stackIntPopBadSize(){
     forkChildAssert("stackIntPopBadSize",int value3 = STACK(StackPop, int)(&stack););
 }
 
+void shootAtTheLeftCanary(){
+    STACK(Stack, int) stack;
+    STACK(StackConstructor, int)(&stack, 100);
+    STACK(StackPush, int)(&stack, 100);
+    STACK(StackPush, int)(&stack, 200);
+    STACK(StackPop, int)(&stack);
+    STACK(StackPop, int)(&stack);
+    //shoot
+    stack.canaryLeft = 42;
+    forkChildAssert("shootAtTheLeftCanary",STACK(StackPush,int)(&stack, 100););
+}
+void shootAtTheRightCanary(){
+    STACK(Stack, int) stack;
+    STACK(StackConstructor, int)(&stack, 100);
+    STACK(StackPush, int)(&stack, 100);
+    STACK(StackPush, int)(&stack, 200);
+    STACK(StackPop, int)(&stack);
+    STACK(StackPop, int)(&stack);
+    //shoot
+    stack.canaryRight = 42;
+    forkChildAssert("shootAtTheRightCanary",STACK(StackPush,int)(&stack, 100););
+}
+
+void shootAtTheBothCanary(){
+    STACK(Stack, int) stack;
+    STACK(StackConstructor, int)(&stack, 100);
+    STACK(StackPush, int)(&stack, 100);
+    STACK(StackPush, int)(&stack, 200);
+    STACK(StackPop, int)(&stack);
+    STACK(StackPop, int)(&stack);
+    //shoot
+    stack.canaryLeft = 42;
+    stack.canaryRight = 42;
+    forkChildAssert("shootAtTheBothCanary",STACK(StackPush,int)(&stack, 100););
+}
+
+void stackIntHashCheck(){
+    STACK(Stack, int) stack;
+    STACK(StackConstructor, int)(&stack, 100);
+    STACK(StackPush, int)(&stack, 100);
+    //shoot
+    stack.canaryHash = 80;
+    forkChildAssert("stackIntHashCheck",STACK(StackPush, int)(&stack, 100););
+}
 
 int main(){
     stackIntConstructor();
@@ -97,5 +146,9 @@ int main(){
     stackSizeAndPush();
     stackIntPop();
     stackIntPopBadSize();
+    shootAtTheLeftCanary();
+    shootAtTheRightCanary();
+    shootAtTheBothCanary();
+    stackIntHashCheck();
     return 0;
 }

@@ -1,3 +1,8 @@
+/**
+* @file         stack_errors.h
+* @brief        Definitions of any types of errors in stack
+* @author       Dvortsova Varvara BSE182 HSE
+*/
 #ifndef IMMORTAL_STACK_STACK_ERRORS_H
 #define IMMORTAL_STACK_STACK_ERRORS_H
 
@@ -5,6 +10,7 @@
 const void * ERROR_PTR;
 #define GET_TYPE(X) #X
 
+/*! This is an enum for defining the type of errors of stack  */
 enum STACK_ERRORS{
     STACK_OK,
     STACK_NULL_POINTER,

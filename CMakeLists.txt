@@ -5,7 +5,6 @@ add_compile_options( -Wall -Wextra -Wfloat-equal)
 set(CMAKE_C_STANDARD 11)
 
 add_executable(immortal_stack
-        main.c
         src/stack.h
         src/templates.h
         src/all_possible_stack.h

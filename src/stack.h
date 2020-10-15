@@ -17,7 +17,7 @@
 #define FILE_DUMP "stack_logs.txt"/*!< defines name of file to log dumps*/
 #define MAX_SIZE_OF_FILE 20000//20kb /*!< defines max size of file to log dumps*/
 #define CANARY_VALUE 0xDADBEEFBADull
-#define CANARY_BUFFER_VALUE 0x42
+#define CANARY_BUFFER_VALUE 0x141ED9590
 #ifdef  T
 
 /**
@@ -42,8 +42,8 @@
   }\
   fprintf(file, "DUMP START=============\n");\
   fprintf(file, "STACK[T = %s] [%p] %s(%d) \n", GET_TYPE(T), (void *)stack, __FILE__, __LINE__);\
-  fprintf(file, "size = %d\n", stack->size);\
-  fprintf(file, "capacity = %d\n", stack->capacity);\
+  fprintf(file, "size = %zd\n", stack->size);\
+  fprintf(file, "capacity = %zd\n", stack->capacity);\
   switch(errorType){\
       case 1:\
             fprintf(file, "errorType  = STACK_NULL_POINTER\n");\
@@ -138,12 +138,12 @@ hash_size STACK(StackHash,T)(STACK(Stack,T)* stack){
 * @param[in]   stack
 * @param[in]   afterOperationOrNo  flag to runs checking after or before any operations of stack
  */
-int STACK(StackOk,T)(STACK(Stack,T)* stack, int afterOperationOrNo){
+int STACK(StackOk, T)(STACK(Stack, T)* stack, int afterOperationOrNo){
     if(stack == NULL)
         return STACK_NULL_POINTER;
     else if(stack->storage == NULL)
         return STACK_NULL_STORAGE;
-    else if(stack->storage == ERROR_PTR)
+    else if(stack->storage == (T*)ERROR_PTR)
         return STACK_ERRPTR_STORAGE;
     else if(stack->size < 0 )
         return STACK_BAD_SIZE;
@@ -179,10 +179,10 @@ int STACK(StackOk,T)(STACK(Stack,T)* stack, int afterOperationOrNo){
 * @param[in]   stack
 * @param[in]   afterOperationOrNo  flag to runs checking after or before any operations of stack
  */
-void STACK(StackOkOrDump,T)(STACK(Stack,T)* stack, int afterOperationOrNo) {
+void STACK(StackOkOrDump, T)(STACK(Stack,T)* stack, int afterOperationOrNo) {
     int resError = STACK(StackOk, T)(stack,afterOperationOrNo);
     if (resError != STACK_OK) {
-            STACK_DUMP(stack,T,resError);
+            STACK_DUMP(stack, T, resError);
             exit(EXIT_FAILURE);
     }
 }
@@ -191,7 +191,7 @@ void STACK(StackOkOrDump,T)(STACK(Stack,T)* stack, int afterOperationOrNo) {
 * @param[in]   stack
 * @param[in]   ssize_t capacity
  */
-int STACK(StackConstructor, T)(STACK(Stack,T)* s, ssize_t capacity){
+int STACK(StackConstructor, T)(STACK(Stack, T)* s, ssize_t capacity){
     if(s == NULL){
         fprintf(stderr, "STACK is null\n");
         exit(-1);
@@ -199,11 +199,11 @@ int STACK(StackConstructor, T)(STACK(Stack,T)* s, ssize_t capacity){
 #ifdef CANARY_CHECK
     s->canaryLeft = CANARY_VALUE;
 
-    void* temp = (char*)calloc(capacity * sizeof(T) + 2*sizeof(char), sizeof(char));
-    char* canaryLeft = (char*)temp;
+    void* temp = (char*)calloc(capacity * sizeof(T) + 2 * sizeof(char), sizeof(char));
+    char* canaryLeft  = (char*)temp;
     char* canaryRight = (char*)((char*)temp + sizeof(char) + capacity * sizeof(T));
-    *canaryLeft = (char)CANARY_BUFFER_VALUE;
-    *canaryRight =(char)CANARY_BUFFER_VALUE;
+    *canaryLeft  = (char)CANARY_BUFFER_VALUE;
+    *canaryRight = (char)CANARY_BUFFER_VALUE;
 
     s->storage = (T*)((char*)temp + 1);
     s->canaryRight = CANARY_VALUE;
@@ -213,7 +213,7 @@ int STACK(StackConstructor, T)(STACK(Stack,T)* s, ssize_t capacity){
     s->size = 0;
     s->capacity = capacity;
 #ifdef HASH_CHECK
-    s->canaryHash = STACK(StackHash,T)(s);
+    s->canaryHash = STACK(StackHash, T)(s);
 #endif
     if(!s->storage){
         fprintf(stderr, "Constructor: can't to calloc memory to storage!\n");
@@ -242,7 +242,7 @@ int STACK(StackDestructor,T)(STACK(Stack,T)* stack){
 #else
     free(stack->storage);
 #endif
-    stack->storage = ERROR_PTR;
+    stack->storage = (T*)ERROR_PTR;
     return STACK_OK;
 }
 
@@ -250,7 +250,7 @@ int STACK(StackDestructor,T)(STACK(Stack,T)* stack){
 * @brief       Method checks the size of the stack
 * @param[in]   stack
  */
-int STACK(StackIsEmpty,T)(STACK(Stack,T)* stack){
+int STACK(StackIsEmpty, T)(STACK(Stack, T)* stack){
     STACK(StackOkOrDump, T)(stack, 0);
     return (stack->size <= 0);
 }
@@ -258,7 +258,7 @@ int STACK(StackIsEmpty,T)(STACK(Stack,T)* stack){
 * @brief       Method returns the size of the stack
 * @param[in]   stack
  */
-int STACK(StackSize,T)(STACK(Stack,T)* stack){
+int STACK(StackSize, T)(STACK(Stack, T)* stack){
     STACK(StackOkOrDump, T)(stack, 0);
     return stack->size;
 }
@@ -268,7 +268,7 @@ int STACK(StackSize,T)(STACK(Stack,T)* stack){
 * @param[in]   stack
 * @param[in]   T value
  */
-int STACK(StackPush,T)(STACK(Stack,T)* stack, T value){
+int STACK(StackPush, T)(STACK(Stack, T)* stack, T value){
     STACK(StackOkOrDump, T)(stack,0);
     //resize stack
     if(stack->size == stack->capacity) {
@@ -276,7 +276,7 @@ int STACK(StackPush,T)(STACK(Stack,T)* stack, T value){
         fprintf(stderr, "Stack was resized\n");
 
 #ifdef  CANARY_CHECK
-        void *temp = realloc((char *) stack->storage - 1, stack->capacity * sizeof(T) + 2 * sizeof(char));
+        void *temp = realloc((char*) stack->storage - 1, stack->capacity * sizeof(T) + 2 * sizeof(char));
         char* canaryLeft = (char*)temp;
         char* canaryRight = (char*)((char*)temp + sizeof(char) + stack->capacity * sizeof(T));
         *canaryLeft = (char)CANARY_BUFFER_VALUE;
@@ -300,7 +300,7 @@ int STACK(StackPush,T)(STACK(Stack,T)* stack, T value){
     }
     stack->storage[stack->size++] = value;
 #ifdef HASH_CHECK
-    stack->canaryHash = STACK(StackHash,T)(stack);
+    stack->canaryHash = STACK(StackHash, T)(stack);
 #endif
     STACK(StackOkOrDump, T)(stack, 1);
     return STACK_OK;
@@ -311,13 +311,13 @@ int STACK(StackPush,T)(STACK(Stack,T)* stack, T value){
 * @param[in]  stack
 * return   T  value
  */
-T  STACK(StackPop,T)(STACK(Stack,T)* stack){
+T  STACK(StackPop, T)(STACK(Stack, T)* stack){
     STACK(StackOkOrDump, T)(stack, 0);
     if(stack->size >= 1){
         T elem = stack->storage[stack->size - 1];
         stack->size--;
 #ifdef HASH_CHECK
-        stack->canaryHash = STACK(StackHash,T)(stack);
+        stack->canaryHash = STACK(StackHash, T)(stack);
 #endif
         return elem;
     }

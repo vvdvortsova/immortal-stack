@@ -274,3 +274,213 @@ size = 1
 capacity = 100
 errorType  =  STACK_HASH_INCORRECT
 DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7fff15b3c8e0] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7fff15b3c8e0] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = 0
+capacity = 100
+errorType  = STACK_LEFT_CANARY_SONGS
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7fff15b3c8e0] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = 0
+capacity = 100
+errorType  = STACK_RIGHT_CANARY_SONGS
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7fff15b3c8e0] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = 0
+capacity = 100
+errorType  = STACK_ALL_CANARY_SONGS
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7fff15b3c8e0] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = 1
+capacity = 100
+errorType  =  STACK_HASH_INCORRECT
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7fff4f334e60] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7fff4f334e60] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = 0
+capacity = 100
+errorType  = STACK_LEFT_CANARY_SONGS
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7fff4f334e60] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = 0
+capacity = 100
+errorType  = STACK_RIGHT_CANARY_SONGS
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7fff4f334e60] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = 0
+capacity = 100
+errorType  = STACK_ALL_CANARY_SONGS
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7fff4f334e60] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = 1
+capacity = 100
+errorType  =  STACK_HASH_INCORRECT
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7fffbbdf7280] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7fff44170b10] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7fff44170b10] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = 0
+capacity = 100
+errorType  = STACK_LEFT_CANARY_SONGS
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7fff44170b10] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = 0
+capacity = 100
+errorType  = STACK_RIGHT_CANARY_SONGS
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7fff44170b10] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = 0
+capacity = 100
+errorType  = STACK_ALL_CANARY_SONGS
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7fff42eae4d0] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7fff42eae4d0] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = 0
+capacity = 100
+errorType  = STACK_LEFT_CANARY_SONGS
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7fff42eae4d0] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = 0
+capacity = 100
+errorType  = STACK_RIGHT_CANARY_SONGS
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7fff42eae4d0] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = 0
+capacity = 100
+errorType  = STACK_ALL_CANARY_SONGS
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7fff42eae4d0] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = 1
+capacity = 100
+errorType  =  STACK_HASH_INCORRECT
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffef70cd720] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffef70cd720] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = 0
+capacity = 100
+errorType  = STACK_LEFT_CANARY_SONGS
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffef70cd720] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = 0
+capacity = 100
+errorType  = STACK_RIGHT_CANARY_SONGS
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffef70cd720] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = 0
+capacity = 100
+errorType  = STACK_ALL_CANARY_SONGS
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffef70cd720] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = 1
+capacity = 100
+errorType  =  STACK_HASH_INCORRECT
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffe824adff0] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffe824adff0] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = 0
+capacity = 100
+errorType  = STACK_LEFT_CANARY_SONGS
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffe824adff0] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = 0
+capacity = 100
+errorType  = STACK_RIGHT_CANARY_SONGS
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffe824adff0] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = 0
+capacity = 100
+errorType  = STACK_ALL_CANARY_SONGS
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffe824adff0] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = 1
+capacity = 100
+errorType  =  STACK_HASH_INCORRECT
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffd6da965d0] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = -1
+capacity = -1
+errorType  = STACK_ERRPTR_STORAGE
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffd6da965d0] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = 0
+capacity = 100
+errorType  = STACK_LEFT_CANARY_SONGS
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffd6da965d0] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = 0
+capacity = 100
+errorType  = STACK_RIGHT_CANARY_SONGS
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffd6da965d0] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = 0
+capacity = 100
+errorType  = STACK_ALL_CANARY_SONGS
+DUMP END=============
+DUMP START=============
+STACK[T = int] [0x7ffd6da965d0] /home/vara/isp_ras_projects/immortal-stack/tests/../src/stack.h(185) 
+size = 1
+capacity = 100
+errorType  =  STACK_HASH_INCORRECT
+DUMP END=============

@@ -78,9 +78,9 @@ void stackIntPop(){
     STACK(StackConstructor, int)(&stack, 100);
     STACK(StackPush, int)(&stack, 100);
     STACK(StackPush, int)(&stack, 200);
-    int value = STACK(StackPop, int)(&stack);
+    STACK(StackPop, int)(&stack);
     assertTestINT("stackIntPop",STACK(StackSize, int)(&stack),1);
-    int value2 = STACK(StackPop, int)(&stack);
+    STACK(StackPop, int)(&stack);
     assertTestINT("stackIntPop",STACK(StackSize, int)(&stack),0);
 }
 void stackIntPopBadSize(){
@@ -88,11 +88,11 @@ void stackIntPopBadSize(){
     STACK(StackConstructor, int)(&stack, 100);
     STACK(StackPush, int)(&stack, 100);
     STACK(StackPush, int)(&stack, 200);
-    int value = STACK(StackPop, int)(&stack);
+    STACK(StackPop, int)(&stack);
     assertTestINT("stackIntPopBadSize",STACK(StackSize, int)(&stack),1);
-    int value2 = STACK(StackPop, int)(&stack);
+    STACK(StackPop, int)(&stack);
     assertTestINT("stackIntPopBadSize",STACK(StackSize, int)(&stack),0);
-    forkChildAssert("stackIntPopBadSize",int value3 = STACK(StackPop, int)(&stack););
+    forkChildAssert("stackIntPopBadSize",STACK(StackPop, int)(&stack););
 }
 
 void shootAtTheLeftCanary(){
@@ -102,9 +102,11 @@ void shootAtTheLeftCanary(){
     STACK(StackPush, int)(&stack, 200);
     STACK(StackPop, int)(&stack);
     STACK(StackPop, int)(&stack);
+#ifdef CANARY_CHECK
     //shoot
     stack.canaryLeft = 42;
     forkChildAssert("shootAtTheLeftCanary",STACK(StackPush,int)(&stack, 100););
+#endif
 }
 void shootAtTheRightCanary(){
     STACK(Stack, int) stack;
@@ -114,8 +116,10 @@ void shootAtTheRightCanary(){
     STACK(StackPop, int)(&stack);
     STACK(StackPop, int)(&stack);
     //shoot
+#ifdef CANARY_CHECK
     stack.canaryRight = 42;
     forkChildAssert("shootAtTheRightCanary",STACK(StackPush,int)(&stack, 100););
+#endif
 }
 
 void shootAtTheBothCanary(){
@@ -126,9 +130,11 @@ void shootAtTheBothCanary(){
     STACK(StackPop, int)(&stack);
     STACK(StackPop, int)(&stack);
     //shoot
+#ifdef CANARY_CHECK
     stack.canaryLeft = 42;
     stack.canaryRight = 42;
     forkChildAssert("shootAtTheBothCanary",STACK(StackPush,int)(&stack, 100););
+#endif
 }
 
 void stackIntHashCheck(){
@@ -136,8 +142,10 @@ void stackIntHashCheck(){
     STACK(StackConstructor, int)(&stack, 100);
     STACK(StackPush, int)(&stack, 100);
     //shoot
+#ifdef HASH_CHECK
     stack.canaryHash = 80;
     forkChildAssert("stackIntHashCheck",STACK(StackPush, int)(&stack, 100););
+#endif
 }
 
 int main(){

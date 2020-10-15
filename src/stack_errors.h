@@ -6,7 +6,7 @@
 #ifndef IMMORTAL_STACK_STACK_ERRORS_H
 #define IMMORTAL_STACK_STACK_ERRORS_H
 
-#define ERROR 42
+#define ERROR 228
 const void * ERROR_PTR;
 #define GET_TYPE(X) #X
 

@@ -1,7 +1,7 @@
 # immortal-stack
 Immortal stack for ISP RAS 
 ## Description
-The stack implementation with a verification, a canaries checking and a hashing checking
+The stack implementation with "generics", a verification, a canaries checking and a hashing checking
 
 ## Installing
 ```bash

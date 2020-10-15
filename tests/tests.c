@@ -13,7 +13,7 @@
  * @param code           Actual value
  * @param expected       Expected value
  * */
-#define assertTestINT( nameOfMethod,code, expected )\
+#define assertTestINT( nameOfMethod, code, expected )\
     if((code) == (expected)){\
         printf("[TEST] [ %s ] [PASSED]\n",\
                 nameOfMethod);\
@@ -51,17 +51,17 @@ fprintf(stderr, "[TEST] [ %s ] [FAILED]\n",\
 
 
 void stackIntConstructor(){
-    STACK(Stack,int) stack;
+    STACK(Stack, int) stack;
     STACK(StackConstructor, int)(&stack, 100);
-    assertTestINT("stackIntConstructor",STACK(StackSize,int)(&stack),0);
+    assertTestINT("stackIntConstructor",STACK(StackSize, int)(&stack),0);
 }
 
 void stackSizeAndPush(){
-    STACK(Stack,int) stack;
+    STACK(Stack, int) stack;
     STACK(StackConstructor, int)(&stack, 100);
-    STACK(StackPush,int)(&stack, 100);
-    STACK(StackPush,int)(&stack, 200);
-    assertTestINT("stackSizeAndPush",STACK(StackSize,int)(&stack),2);
+    STACK(StackPush, int)(&stack, 100);
+    STACK(StackPush, int)(&stack, 200);
+    assertTestINT("stackSizeAndPush",STACK(StackSize, int)(&stack),2);
 }
 void stackIntDestructor(){
     STACK(Stack, int) stack;
@@ -105,7 +105,7 @@ void shootAtTheLeftCanary(){
 #ifdef CANARY_CHECK
     //shoot
     stack.canaryLeft = 42;
-    forkChildAssert("shootAtTheLeftCanary",STACK(StackPush,int)(&stack, 100););
+    forkChildAssert("shootAtTheLeftCanary",STACK(StackPush, int)(&stack, 100););
 #endif
 }
 void shootAtTheRightCanary(){
@@ -118,7 +118,7 @@ void shootAtTheRightCanary(){
     //shoot
 #ifdef CANARY_CHECK
     stack.canaryRight = 42;
-    forkChildAssert("shootAtTheRightCanary",STACK(StackPush,int)(&stack, 100););
+    forkChildAssert("shootAtTheRightCanary",STACK(StackPush, int)(&stack, 100););
 #endif
 }
 
@@ -133,7 +133,7 @@ void shootAtTheBothCanary(){
 #ifdef CANARY_CHECK
     stack.canaryLeft = 42;
     stack.canaryRight = 42;
-    forkChildAssert("shootAtTheBothCanary",STACK(StackPush,int)(&stack, 100););
+    forkChildAssert("shootAtTheBothCanary",STACK(StackPush, int)(&stack, 100););
 #endif
 }
 

@@ -1,6 +1,6 @@
 /**
 * @file         stack.h
-* @brief        Headers of methods for stack
+* @brief        Definitions of methods for stack
 * @author       Dvortsova Varvara BSE182 HSE
 * @include      stdio.h, stdlib.h, assert.h, string.h, templates.h, stack_errors.h
 */
@@ -302,3 +302,4 @@ T  STACK(StackPop, T)(STACK(Stack, T)* stack){
 
 
 #endif
+

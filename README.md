@@ -33,7 +33,7 @@ To run tests
 ```bash
 cmake .
 make
-./test
+./immortal_stack
 ```
 ## Documentation
 You can watch documentation by opening

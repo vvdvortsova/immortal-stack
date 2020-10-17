@@ -14,10 +14,16 @@
 #include "stack.h"
 #undef T
 
-
 #define T int
 #include "stack.h"
 #undef T
 
+#define T char
+#include "stack.h"
+#undef T
+
+#define T long
+#include "stack.h"
+#undef T
 
 #endif //IMMORTAL_STACK_ALL_POSSIBLE_STACK_H

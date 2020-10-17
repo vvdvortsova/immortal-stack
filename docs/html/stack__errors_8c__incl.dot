@@ -5,4 +5,6 @@ digraph "src/stack_errors.c"
   Node0 [label="src/stack_errors.c",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
   Node0 -> Node1 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node1 [label="stack_errors.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$stack__errors_8h.html",tooltip="Definitions of any types of errors in stack. "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="stdio.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
 }

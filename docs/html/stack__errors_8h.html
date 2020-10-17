@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Immortal Stack: src/stack_errors.h File Reference</title>
+<title>IMMORTAL STACK: src/stack_errors.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Immortal Stack
+   <div id="projectname">IMMORTAL STACK
    </div>
   </td>
  </tr>
@@ -65,6 +65,7 @@ $(function() {
   <div class="summary">
 <a href="#define-members">Macros</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
+<a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">stack_errors.h File Reference</div>  </div>
@@ -73,7 +74,15 @@ $(function() {
 
 <p>Definitions of any types of errors in stack.  
 <a href="#details">More...</a></p>
-<div class="textblock"><div class="dynheader">
+<div class="textblock"><code>#include &lt;stdio.h&gt;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Include dependency graph for stack_errors.h:</div>
+<div class="dyncontent">
+<div class="center"><img src="stack__errors_8h__incl.png" border="0" usemap="#src_2stack__errors_8h" alt=""/></div>
+<map name="src_2stack__errors_8h" id="src_2stack__errors_8h">
+</map>
+</div>
+</div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="stack__errors_8h__dep__incl.png" border="0" usemap="#src_2stack__errors_8hdep" alt=""/></div>
@@ -86,7 +95,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a8fe83ac76edc595f6b98cd4a4127aed5"><td class="memItemLeft" align="right" valign="top"><a id="a8fe83ac76edc595f6b98cd4a4127aed5"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ERROR</b>&#160;&#160;&#160;42</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ERROR</b>&#160;&#160;&#160;228</td></tr>
 <tr class="separator:a8fe83ac76edc595f6b98cd4a4127aed5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1023a5b50336e76c7323193fa487beb4"><td class="memItemLeft" align="right" valign="top"><a id="a1023a5b50336e76c7323193fa487beb4"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>GET_TYPE</b>(X)&#160;&#160;&#160;#X</td></tr>
@@ -108,10 +117,34 @@ Enumerations</h2></td></tr>
 &#160;&#160;<b>STACK_ALL_CANARY_SONGS</b>, 
 <b>STACK_BUFFER_CANARY_LEFT_SONGS</b>, 
 <b>STACK_BUFFER_CANARY_RIGHT_SONGS</b>, 
-<b>STACK_HASH_INCORRECT</b>
+<b>STACK_HASH_INCORRECT</b>, 
+<br />
+&#160;&#160;<b>STACK_POISON_ERROR</b>, 
+<b>STACK_OVERFLOW</b>
 <br />
  }</td></tr>
 <tr class="separator:a2c6d50d61ab1bc7cf9ce58c67c8b065d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ac10edab11cd4851be16ef8ead712e3bf"><td class="memItemLeft" align="right" valign="top"><a id="ac10edab11cd4851be16ef8ead712e3bf"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>printErrorType</b> (int errorType, FILE *file)</td></tr>
+<tr class="separator:ac10edab11cd4851be16ef8ead712e3bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2427cf5d21e00c6766008cd378531405"><td class="memItemLeft" align="right" valign="top"><a id="a2427cf5d21e00c6766008cd378531405"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>StackPrint_int</b> (int item, FILE *file)</td></tr>
+<tr class="separator:a2427cf5d21e00c6766008cd378531405"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e7cae6880866f57c9f6bd9ef05ac59b"><td class="memItemLeft" align="right" valign="top"><a id="a6e7cae6880866f57c9f6bd9ef05ac59b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>StackPrint_double</b> (double item, FILE *file)</td></tr>
+<tr class="separator:a6e7cae6880866f57c9f6bd9ef05ac59b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45ba79285b01384359d5609970d8858e"><td class="memItemLeft" align="right" valign="top"><a id="a45ba79285b01384359d5609970d8858e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>StackPrint_char</b> (char item, FILE *file)</td></tr>
+<tr class="separator:a45ba79285b01384359d5609970d8858e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc1cbf7e5d79516a72dc04a87de3c68a"><td class="memItemLeft" align="right" valign="top"><a id="abc1cbf7e5d79516a72dc04a87de3c68a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>StackPrint_long</b> (long item, FILE *file)</td></tr>
+<tr class="separator:abc1cbf7e5d79516a72dc04a87de3c68a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81c1580d60f5434cff53738bab771430"><td class="memItemLeft" align="right" valign="top"><a id="a81c1580d60f5434cff53738bab771430"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>StackPrint_float</b> (float item, FILE *file)</td></tr>
+<tr class="separator:a81c1580d60f5434cff53738bab771430"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -121,7 +154,7 @@ const void *&#160;</td><td class="memItemRight" valign="bottom"><b>ERROR_PTR</b>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Definitions of any types of errors in stack. </p>
-<dl class="section author"><dt>Author</dt><dd>Dvortsova Varvara BSE182 HSE </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Dvortsova Varvara BSE182 HSE <div class="fragment"></div><!-- fragment --> </dd></dl>
 </div><h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="a2c6d50d61ab1bc7cf9ce58c67c8b065d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2c6d50d61ab1bc7cf9ce58c67c8b065d">&#9670;&nbsp;</a></span>STACK_ERRORS</h2>

@@ -273,6 +273,31 @@ int STACK(StackSize, T)(STACK(Stack, T)* stack){
  */
 int STACK(StackPush, T)(STACK(Stack, T)* stack, T value){
     STACK(StackOkOrDump, T)(stack,0);
+
+    if(stack->size == stack->capacity){
+        stack->capacity *= 2;
+#ifdef CANARY_CHECK
+        void* tmp = realloc((canary_size*)stack->storage - 1, stack->capacity * sizeof(T) + 2 * sizeof(canary_size));
+#else
+        T* tmp = (T*)realloc(stack->storage, stack->capacity * sizeof(T));
+#endif
+        if(!tmp){
+            printf("Realloc FAILED!\n");
+            exit(EXIT_FAILURE);
+        }else{
+#ifdef CANARY_CHECK
+            stack->storage = (T*)(tmp + sizeof(canary_size));
+            canary_size* canaryLeft  = (canary_size*)((void*)stack->storage - sizeof(canary_size));
+            canary_size* canaryRight = (canary_size*)((void*)stack->storage + stack->capacity * sizeof(T));
+            *canaryLeft  = CANARY_BUFFER_VALUE;
+            *canaryRight = CANARY_BUFFER_VALUE;
+#else
+            stack->storage = tmp;
+#endif
+            for(int i = stack->size; i < stack->capacity; ++i)
+                stack->storage[i] = POISON;
+        }
+    }
     stack->storage[stack->size++] = value;
 #ifdef HASH_CHECK
     stack->canaryHash = STACK(StackHash, T)(stack);

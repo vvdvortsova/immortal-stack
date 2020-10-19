@@ -32,7 +32,7 @@ fprintf(stderr, "[TEST] [ %s ] [FAILED]\n",\
  * @param nameOfMethod   Describe the name Of method where forkChildAssert was called
  * @param statement      Statement runs in child process
  * */
-#define forkChildAssert(nameOfFunction, statement)\
+#define forkChildAssert(nameOfFunction, statement, expectedCode)\
     pid_t ppid = fork();\
     if(ppid < 0){\
         fprintf(stderr, "Failed to create child process\n");\
@@ -45,7 +45,7 @@ fprintf(stderr, "[TEST] [ %s ] [FAILED]\n",\
       waitpid(ppid, &status, 0);\
       if (WIFEXITED(status)){\
         int exitCode = WEXITSTATUS(status);\
-        assertTestINT(nameOfFunction, exitCode , EXIT_FAILURE);\
+        assertTestINT(nameOfFunction, exitCode , expectedCode);\
       }\
     }\
 
@@ -70,7 +70,8 @@ void stackIntDestructor(){
     STACK(StackPush, int)(&stack, 200);
     STACK(StackDestructor, int)(&stack);
 
-    forkChildAssert("stackIntDestructor",STACK(StackPop, int)(&stack);)
+
+    forkChildAssert("stackIntDestructor",STACK(StackPop, int)(&stack);, EXIT_FAILURE)
 }
 
 void stackIntPop(){
@@ -90,7 +91,7 @@ void stackIntPushResizeMany(){
     STACK(StackPush, int)(&stack, 100);
     STACK(StackPush, int)(&stack, 200);
     STACK(StackPush, int)(&stack, 200);
-    forkChildAssert("stackIntPushResizeMany",    STACK(StackPush, int)(&stack, 200);)
+    forkChildAssert("stackIntPushResizeMany",    STACK(StackPush, int)(&stack, 200);, 0)
 }
 
 void stackIntPopBadSize(){
@@ -102,7 +103,7 @@ void stackIntPopBadSize(){
     assertTestINT("stackIntPopBadSize",STACK(StackSize, int)(&stack),1);
     STACK(StackPop, int)(&stack);
     assertTestINT("stackIntPopBadSize",STACK(StackSize, int)(&stack),0);
-    forkChildAssert("stackIntPopBadSize",STACK(StackPop, int)(&stack););
+    forkChildAssert("stackIntPopBadSize",STACK(StackPop, int)(&stack);, EXIT_FAILURE);
 }
 
 void shootAtTheLeftCanary(){
@@ -115,7 +116,7 @@ void shootAtTheLeftCanary(){
 #ifdef CANARY_CHECK
     //shoot
     stack.canaryLeft = 42;
-    forkChildAssert("shootAtTheLeftCanary",STACK(StackPush, int)(&stack, 100););
+    forkChildAssert("shootAtTheLeftCanary",STACK(StackPush, int)(&stack, 100);, EXIT_FAILURE);
 #endif
 }
 void shootAtTheRightCanary(){
@@ -128,7 +129,7 @@ void shootAtTheRightCanary(){
     //shoot
 #ifdef CANARY_CHECK
     stack.canaryRight = 42;
-    forkChildAssert("shootAtTheRightCanary",STACK(StackPush, int)(&stack, 100););
+    forkChildAssert("shootAtTheRightCanary",STACK(StackPush, int)(&stack, 100);, EXIT_FAILURE);
 #endif
 }
 
@@ -143,7 +144,7 @@ void shootAtTheBothCanary(){
 #ifdef CANARY_CHECK
     stack.canaryLeft = 42;
     stack.canaryRight = 42;
-    forkChildAssert("shootAtTheBothCanary",STACK(StackPush, int)(&stack, 100););
+    forkChildAssert("shootAtTheBothCanary",STACK(StackPush, int)(&stack, 100);, EXIT_FAILURE);
 #endif
 }
 
@@ -154,7 +155,7 @@ void stackIntHashCheck(){
     //shoot
 #ifdef HASH_CHECK
     stack.canaryHash = 80;
-    forkChildAssert("stackIntHashCheck",STACK(StackPush, int)(&stack, 100););
+    forkChildAssert("stackIntHashCheck",STACK(StackPush, int)(&stack, 100);, EXIT_FAILURE);
 #endif
 }
 

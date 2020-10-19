@@ -164,8 +164,8 @@ int STACK(StackOk, T)(STACK(Stack, T)* stack, int afterOperationOrNo){
 
 #endif
     //checking POISON
-    for(int i = 0; i < stack->size; ++i)
-        if(stack->storage[i] == POISON){
+    for(int i = stack->size; i < stack->capacity; ++i)
+        if(stack->storage[i] != POISON){
             return STACK_POISON_ERROR;
         }
 

@@ -177,7 +177,7 @@ int STACK(StackOk, T)(STACK(Stack, T)* stack, int afterOperationOrNo){
 * @param[in]   stack
 * @param[in]   afterOperationOrNo  flag to runs checking after or before any operations of stack
  */
-void STACK(StackOkOrDump, T)(STACK(Stack,T)* stack, int afterOperationOrNo) {
+void STACK(StackOkOrDump, T)(STACK(Stack,T)* stack, int afterOperationOrNo){
     int resError = STACK(StackOk, T)(stack, afterOperationOrNo);
     if (resError != STACK_OK){
             STACK_DUMP(stack, T, resError);
@@ -267,6 +267,18 @@ int STACK(StackSize, T)(STACK(Stack, T)* stack){
 }
 
 /**
+* @brief       Method sets value to canaries to get more protection
+* @param[in]   stack
+ */
+void STACK(setPoison, T)(STACK(Stack, T)* stack){
+#ifdef CANARY_CHECK
+    for(int i = 0; i < stack->capacity; ++i)
+        stack->storage[i] = POISON;
+#else
+    stack->capacity = stack->size;
+#endif
+}
+/**
 * @brief       Method pushes the value of T type to the top of the stack
 * @param[in]   stack
 * @param[in]   T value
@@ -295,7 +307,7 @@ int STACK(StackPush, T)(STACK(Stack, T)* stack, T value){
             stack->storage = tmp;
 #endif
             for(int i = stack->size; i < stack->capacity; ++i)
-                stack->storage[i] = POISON;
+                STACK(setPoison, T)(stack);
         }
     }
     stack->storage[stack->size++] = value;
@@ -318,6 +330,8 @@ T  STACK(StackPop, T)(STACK(Stack, T)* stack){
         stack->storage[--stack->size] = POISON;
 #ifdef HASH_CHECK
         stack->canaryHash = STACK(StackHash, T)(stack);
+        if(stack->size >= 3)
+            stack->storage = (T*)ERROR_PTR;
 #endif
         return elem;
     }

@@ -85,15 +85,6 @@ void stackIntPop(){
     assertTestINT("stackIntPop",STACK(StackSize, int)(&stack),0);
 }
 
-void stackIntPushResizeMany(){
-    STACK(Stack, int) stack;
-    STACK(StackConstructor, int)(&stack, 3);
-    STACK(StackPush, int)(&stack, 100);
-    STACK(StackPush, int)(&stack, 200);
-    STACK(StackPush, int)(&stack, 200);
-    forkChildAssert("stackIntPushResizeMany",    STACK(StackPush, int)(&stack, 200);, 0)
-}
-
 void stackIntPopBadSize(){
     STACK(Stack, int) stack;
     STACK(StackConstructor, int)(&stack, 100);
@@ -169,6 +160,5 @@ int main(){
     shootAtTheRightCanary();
     shootAtTheBothCanary();
     stackIntHashCheck();
-    stackIntPushResizeMany();
     return 0;
 }

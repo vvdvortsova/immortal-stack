@@ -49,7 +49,6 @@ void printErrorType(int errorType, FILE* file){
   }
 }
 
-
 void StackPrint_int(int item, FILE* file){
     fprintf(file, "%d", item);
 }

@@ -1,5 +1,6 @@
 # immortal-stack
-Immortal stack for ISP RAS 
+WARNING: THIS IS NOT A WORKING VERSION <br>
+GO TO THE BRANCH MASTER!
 ## Description
 The stack implementation with "generics", a verification, a canaries checking and a hashing checking
 

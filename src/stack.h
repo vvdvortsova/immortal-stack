@@ -17,9 +17,9 @@
 
 #define FILE_DUMP "stack_logs.txt"/*!< defines name of file to log dumps*/
 #define MAX_SIZE_OF_FILE 20000//20kb /*!< defines max size of file to log dumps*/
-#define CANARY_VALUE 0xDADBEEFBADull
-#define CANARY_BUFFER_VALUE 0x141ED9590
-#define POISON 0xDEADBEEF
+#define CANARY_VALUE 0xDADBE
+#define CANARY_BUFFER_VALUE 0x141E
+#define POISON 0xD
 #define HASH_CONST 228
 #ifdef  T
 
@@ -44,20 +44,26 @@
       fclose(fopen(FILE_DUMP, "w"));\
       file = fopen(FILE_DUMP, "a");\
   }\
-  fprintf(file, "DUMP START=============\n");\
-  fprintf(file, "\tSTACK[T = %s] STACK[%p] %s(%d) \n", GET_TYPE(T), (void*)stack, __FILE__, __LINE__);\
-  fprintf(file, "\tsize = %zd\n", stack->size);\
-  fprintf(file, "\tcapacity = %zd\n", stack->capacity);\
-  fprintf(file, "items: \n");\
-    for (int i = 0; i < stack->size; ++i) {\
-    fprintf(file, "\t*[%d] = ", i);\
-    STACK(StackPrint, T)(stack->storage[i], file);\
-    fprintf(file, "\n");\
+  if(stack != NULL){\
+        fprintf(file, "DUMP START=============\n");\
+        fprintf(file, "\tSTACK[T = %s] STACK[%p] %s(%d) \n", GET_TYPE(T), (void*)stack, __FILE__, __LINE__);\
+        fprintf(file, "\tsize = %zd\n", stack->size);\
+        fprintf(file, "\tcapacity = %zd\n", stack->capacity);\
+        fprintf(file, "items: \n");\
+        for (int i = 0; i < stack->size; ++i) {\
+            fprintf(file, "\t*[%d] = ", i);\
+            STACK(StackPrint, T)(stack->storage[i], file);\
+            fprintf(file, "\n");\
+            }\
+        printErrorType(errorType, file);\
+        fprintf(file,"DUMP END=============\n");\
+        fclose(file);\
+        fprintf(stderr, "DUMP JUMPED!\n");\
   }\
-  printErrorType(errorType, file);\
-  fprintf(file,"DUMP END=============\n");\
-  fclose(file);\
-  fprintf(stderr, "DUMP JUMPED!\n");\
+  else{\
+        fprintf(file,"You broke the DUMP :(!\n");\
+  }\
+
 
 
 typedef uint64_t  canary_size;
@@ -203,8 +209,8 @@ int STACK(StackConstructor, T)(STACK(Stack, T)* stack, ssize_t capacity){
     void* temp = calloc(capacity * sizeof(T) + 2 * sizeof(canary_size), 1);
     stack->storage = (T*)(temp + sizeof(canary_size));
 
-    canary_size* canaryLeft  = (canary_size*)((void*)stack->storage - sizeof(canary_size));
-    canary_size* canaryRight = (canary_size*)((void*)stack->storage + capacity * sizeof(T));
+    canary_size* canaryLeft  = (canary_size*)((char*)stack->storage - sizeof(canary_size));
+    canary_size* canaryRight = (canary_size*)((char*)stack->storage + capacity * sizeof(T));
 
     *canaryLeft  = CANARY_BUFFER_VALUE;
     *canaryRight = CANARY_BUFFER_VALUE;
@@ -287,8 +293,8 @@ int STACK(StackPush, T)(STACK(Stack, T)* stack, T value){
         }else{
 #ifdef CANARY_CHECK
             stack->storage = (T*)(tmp + sizeof(canary_size));
-            canary_size* canaryLeft  = (canary_size*)((void*)stack->storage - sizeof(canary_size));
-            canary_size* canaryRight = (canary_size*)((void*)stack->storage + stack->capacity * sizeof(T));
+            canary_size* canaryLeft  = (canary_size*)((char*)stack->storage - sizeof(canary_size));
+            canary_size* canaryRight = (canary_size*)((char*)stack->storage + stack->capacity * sizeof(T));
             *canaryLeft  = CANARY_BUFFER_VALUE;
             *canaryRight = CANARY_BUFFER_VALUE;
 #else

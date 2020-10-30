@@ -54,6 +54,7 @@ void stackIntConstructor(){
     STACK(Stack, int) stack;
     STACK(StackConstructor, int)(&stack, 100);
     assertTestINT("stackIntConstructor",STACK(StackSize, int)(&stack),0);
+    STACK(StackDestructor, int)(&stack);
 }
 
 void stackSizeAndPush(){
@@ -62,15 +63,15 @@ void stackSizeAndPush(){
     STACK(StackPush, int)(&stack, 100);
     STACK(StackPush, int)(&stack, 200);
     assertTestINT("stackSizeAndPush",STACK(StackSize, int)(&stack),2);
+    STACK(StackDestructor, int)(&stack);
 }
+
 void stackIntDestructor(){
     STACK(Stack, int) stack;
     STACK(StackConstructor, int)(&stack, 100);
     STACK(StackPush, int)(&stack, 100);
     STACK(StackPush, int)(&stack, 200);
     STACK(StackDestructor, int)(&stack);
-
-
     forkChildAssert("stackIntDestructor",STACK(StackPop, int)(&stack);, EXIT_FAILURE)
 }
 
@@ -83,6 +84,7 @@ void stackIntPop(){
     assertTestINT("stackIntPop",STACK(StackSize, int)(&stack),1);
     STACK(StackPop, int)(&stack);
     assertTestINT("stackIntPop",STACK(StackSize, int)(&stack),0);
+    STACK(StackDestructor, int)(&stack);
 }
 
 void stackIntPushResizeMany(){
@@ -92,6 +94,7 @@ void stackIntPushResizeMany(){
     STACK(StackPush, int)(&stack, 200);
     STACK(StackPush, int)(&stack, 200);
     forkChildAssert("stackIntPushResizeMany",    STACK(StackPush, int)(&stack, 200);, 0)
+    STACK(StackDestructor, int)(&stack);
 }
 
 void stackIntPopBadSize(){
@@ -104,6 +107,7 @@ void stackIntPopBadSize(){
     STACK(StackPop, int)(&stack);
     assertTestINT("stackIntPopBadSize",STACK(StackSize, int)(&stack),0);
     forkChildAssert("stackIntPopBadSize",STACK(StackPop, int)(&stack);, EXIT_FAILURE);
+    STACK(StackDestructor, int)(&stack);
 }
 
 void shootAtTheLeftCanary(){
@@ -159,6 +163,33 @@ void stackIntHashCheck(){
 #endif
 }
 
+void stackDoubleConstructor(){
+    STACK(Stack, double) stack;
+    STACK(StackConstructor, double)(&stack, 100);
+    assertTestINT("stackDoubleConstructor",STACK(StackSize, double)(&stack),0);
+    StackDestructor_double(&stack);
+}
+void stackDoubleDestructor(){
+    Stack_double stack;
+    StackConstructor_double(&stack, 100);
+    StackPush_double(&stack, 100);
+    StackPush_double(&stack, 200);
+    StackDestructor_double(&stack);
+    forkChildAssert("stackDoubleDestructor",STACK(StackPop, double)(&stack);, EXIT_FAILURE)
+}
+
+void stackDoublePop(){
+    STACK(Stack, double) stack;
+    STACK(StackConstructor, double)(&stack, 100);
+    STACK(StackPush, double)(&stack, 100);
+    STACK(StackPush, double)(&stack, 200);
+    STACK(StackPop, double)(&stack);
+    assertTestINT("stackDoublePop",STACK(StackSize, double)(&stack),1);
+    STACK(StackPop, double)(&stack);
+    assertTestINT("stackDoublePop",STACK(StackSize, double)(&stack),0);
+    StackDestructor_double(&stack);
+}
+
 int main(){
     stackIntConstructor();
     stackIntDestructor();
@@ -170,5 +201,8 @@ int main(){
     shootAtTheBothCanary();
     stackIntHashCheck();
     stackIntPushResizeMany();
+    stackDoubleConstructor();
+    stackDoubleDestructor();
+    stackDoublePop();
     return 0;
 }
